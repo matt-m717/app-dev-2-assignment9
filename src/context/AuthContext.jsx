@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
 
         setUser(userData);
 
+        // ideally this would be a JWT, but this app has no backend
         localStorage.setItem("user", JSON.stringify(userData));
 
         return userData;
