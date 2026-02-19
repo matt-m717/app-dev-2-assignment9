@@ -11,31 +11,31 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const saved = localStorage.getItem("user");
+        return saved ? JSON.parse(saved) : null;
+    });
 
     const isAuthenticated = () => {
         return user !== null;
     };
 
     const login = (username, password, role = "regular") => {
-        const mockToken = `mock_jwt_token_${Date.now()}`;
-
         const userData = {
             username: username,
-            role: role,
-            token: mockToken
+            role: role
         };
 
         setUser(userData);
 
-        localStorage.setItem("authToken", mockToken);
+        localStorage.setItem("user", JSON.stringify(userData));
 
         return userData;
     };
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
     };
 
     const isAdmin = () => {
